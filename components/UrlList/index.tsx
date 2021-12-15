@@ -5,6 +5,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
   List,
   ListItem,
@@ -18,6 +19,7 @@ import { useToast } from "@chakra-ui/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { firebase, firestore } from "../../firebase/clientApp";
+import axios from "axios";
 
 type LinksType = {
   email: string;
@@ -29,7 +31,7 @@ const UrlList: React.FC = () => {
     email: "",
     urls: [{ longUrl: "", shortUrl: "" }],
   });
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [copied, setCopied] = useState<number[]>([]);
   const [longLink, setLongLink] = useState("");
 
@@ -42,11 +44,9 @@ const UrlList: React.FC = () => {
     query.onSnapshot(
       (querySnapshot) => {
         if (querySnapshot.empty) {
-          console.log("No matching documents.");
           return;
         }
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, "=>", doc.data());
           setLinks(doc.data());
         });
       },
@@ -67,15 +67,37 @@ const UrlList: React.FC = () => {
   }, []);
 
   const submitLink = () => {
+    setLoading(true);
     if (!longLink) {
       toast({
         title: "Error",
-        description: "Kimdly add a link to shorten",
+        description: "Kindly add a link to shorten",
         status: "error",
         duration: 2000,
         position: "top",
       });
     }
+
+    axios
+      .post(
+        "https://api.tinyurl.com/create",
+        {
+          url: longLink,
+          domain: "tiny.one",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TINY_URL_AUTH}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <Center>
@@ -87,7 +109,12 @@ const UrlList: React.FC = () => {
               placeholder="Enter your link here"
               onChange={(event) => setLongLink(event.target.value)}
             />
-            <Button mt={4} colorScheme="teal" onClick={() => submitLink()}>
+            <Button
+              isLoading={loading}
+              mt={4}
+              colorScheme="teal"
+              onClick={() => submitLink()}
+            >
               Submit
             </Button>
           </FormControl>
@@ -118,12 +145,9 @@ const UrlList: React.FC = () => {
                     label="Click on the short link to copy"
                     aria-label="A tooltip"
                   >
-                    <Button
+                    <IconButton
                       onClick={() => {}}
-                      size="sm"
-                      height="48px"
-                      width="48px"
-                      border="2px"
+                      aria-label="copy"
                       borderColor="orange.400"
                       rightIcon={
                         itemCopied ? (
@@ -132,7 +156,7 @@ const UrlList: React.FC = () => {
                           <FaCopy />
                         )
                       }
-                    ></Button>
+                    ></IconButton>
                   </Tooltip>
                 </Stack>
               </ListItem>
