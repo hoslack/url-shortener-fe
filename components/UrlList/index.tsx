@@ -152,21 +152,16 @@ const UrlList: React.FC = () => {
             return (
               <ListItem key={url.longUrl} display="flex">
                 <Stack direction="row">
-                  <Code
-                    display="flex"
-                    alignItems="center"
-                    children={url.longUrl}
-                  />
+                  <Code display="flex" alignItems="center">
+                    {url.longUrl}
+                  </Code>
                   <CopyToClipboard
                     text={url.shortUrl}
                     onCopy={() => setCopied([...copied, index])}
                   >
-                    <Code
-                      display="flex"
-                      alignItems="center"
-                      colorScheme="red"
-                      children={url.shortUrl}
-                    />
+                    <Code display="flex" alignItems="center" colorScheme="red">
+                      {url.shortUrl}
+                    </Code>
                   </CopyToClipboard>
                   <Tooltip
                     label="Click on the short link to copy"
