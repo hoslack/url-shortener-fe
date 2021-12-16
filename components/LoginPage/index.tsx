@@ -9,11 +9,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Lottie from "react-lottie";
+import { useToast } from "@chakra-ui/react";
 
 import * as linkAnimation from "../../statics/url-link-lottie.json";
 import { firebase } from "../../firebase/clientApp";
 
 const LoginPage: React.FC = () => {
+  const toast = useToast();
+
   const lottieOptions = {
     loop: true,
     autoplay: true,
@@ -23,14 +26,21 @@ const LoginPage: React.FC = () => {
     },
   };
 
-  console.log(firebase);
   const signIn = () => {
     const google_provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
       .signInWithPopup(google_provider)
-      .then((res) => console.log())
-      .catch((err) => console.log(err));
+      .then((res) => res)
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "There was an error loging in",
+          status: "error",
+          duration: 2000,
+          position: "top",
+        });
+      });
   };
 
   return (
