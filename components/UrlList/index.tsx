@@ -57,9 +57,6 @@ const UrlList: React.FC = () => {
     }, 2000);
   }, []);
 
-  const ref =
-    currentId && firestore.collection("links").doc(currentId).update({});
-
   currentId &&
     firestore
       .collection("links")
@@ -113,8 +110,8 @@ const UrlList: React.FC = () => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        setLongLink("");
         toast({
           title: "Error",
           description: "There was an error converting the url",
@@ -126,23 +123,31 @@ const UrlList: React.FC = () => {
   };
   return (
     <Center w="100%" display="flex" flexDir="column">
-      <Flex mb={30} justifyContent="center" w={"100%"}>
-        <FormControl id="longLink" isRequired maxW={"70%"}>
-          <FormLabel>Link to be shortened</FormLabel>
-          <Input
-            placeholder="Enter your link here"
-            onChange={(event) => setLongLink(event.target.value)}
-          />
-          <Button
-            isLoading={loading}
-            mt={4}
-            colorScheme="teal"
-            onClick={() => submitLink()}
-          >
-            Submit
-          </Button>
-        </FormControl>
-      </Flex>
+      <FormControl
+        id="longLink"
+        isRequired
+        maxW={"60%"}
+        display="flex"
+        flexDir="row"
+        alignItems="center"
+        mt={10}
+        mb={20}
+        justifyContent="center"
+      >
+        <Input
+          placeholder="Enter your link here"
+          onChange={(event) => setLongLink(event.target.value)}
+          value={longLink}
+        />
+        <Button
+          isLoading={loading}
+          ml={10}
+          colorScheme="teal"
+          onClick={() => submitLink()}
+        >
+          Submit
+        </Button>
+      </FormControl>
       <List spacing={3} height={200} overflow="scroll">
         {links.urls &&
           links.urls.map((url: any, index: number) => {
