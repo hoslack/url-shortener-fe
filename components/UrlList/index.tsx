@@ -48,13 +48,10 @@ const UrlList: React.FC = () => {
         console.log(`Encountered error: ${err}`);
       }
     );
-    // set it to state
   };
 
   useEffect(() => {
-    // get the todos
     getLinks();
-    // reset loading
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -95,6 +92,7 @@ const UrlList: React.FC = () => {
         }
       )
       .then(({ data }) => {
+        setLongLink("");
         setLoading(false);
         if (links.email) {
           firestore
