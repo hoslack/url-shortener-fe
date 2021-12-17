@@ -131,7 +131,6 @@ const UrlList: React.FC = () => {
         alignItems="center"
         mt={10}
         mb={20}
-        // justifyContent="center"
       >
         <Input
           placeholder="Enter your link here"
