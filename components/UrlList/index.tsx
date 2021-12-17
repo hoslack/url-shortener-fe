@@ -2,18 +2,17 @@ import {
   Button,
   Center,
   Code,
-  Flex,
   FormControl,
-  FormLabel,
   IconButton,
   Input,
-  List,
+  ListIcon,
   ListItem,
+  OrderedList,
   Stack,
   Tooltip,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { MdDoneAll } from "react-icons/md";
+import { MdCheckCircle, MdDoneAll } from "react-icons/md";
 import { FaCopy } from "react-icons/fa";
 import { useToast } from "@chakra-ui/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -126,13 +125,13 @@ const UrlList: React.FC = () => {
       <FormControl
         id="longLink"
         isRequired
-        maxW={"60%"}
+        w={[300, 400, 400]}
         display="flex"
         flexDir="row"
         alignItems="center"
         mt={10}
         mb={20}
-        justifyContent="center"
+        // justifyContent="center"
       >
         <Input
           placeholder="Enter your link here"
@@ -148,21 +147,36 @@ const UrlList: React.FC = () => {
           Submit
         </Button>
       </FormControl>
-      <List spacing={3} height={200} overflow="scroll">
+      <OrderedList spacing={3} height={200} overflow="scroll">
         {links.urls &&
           links.urls.map((url: any, index: number) => {
             const itemCopied = copied.includes(index);
             return (
-              <ListItem key={url.longUrl} display="flex">
-                <Stack direction="row">
-                  <Code display="flex" alignItems="center">
+              <ListItem key={url.longUrl}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  w="fit-content"
+                >
+                  <Code
+                    display="flex"
+                    alignItems="center"
+                    w={[200, 300, 400]}
+                    overflow="scroll"
+                  >
                     {url.longUrl}
                   </Code>
                   <CopyToClipboard
                     text={url.shortUrl}
                     onCopy={() => setCopied([...copied, index])}
                   >
-                    <Code display="flex" alignItems="center" colorScheme="red">
+                    <Code
+                      display="flex"
+                      alignItems="center"
+                      colorScheme="red"
+                      w={[150, 200, 300]}
+                      overflow="scroll"
+                    >
                       {url.shortUrl}
                     </Code>
                   </CopyToClipboard>
@@ -187,7 +201,7 @@ const UrlList: React.FC = () => {
               </ListItem>
             );
           })}
-      </List>
+      </OrderedList>
     </Center>
   );
 };
