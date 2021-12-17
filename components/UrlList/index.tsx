@@ -5,14 +5,13 @@ import {
   FormControl,
   IconButton,
   Input,
-  ListIcon,
   ListItem,
   OrderedList,
   Stack,
   Tooltip,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { MdCheckCircle, MdDoneAll } from "react-icons/md";
+import { MdDoneAll } from "react-icons/md";
 import { FaCopy } from "react-icons/fa";
 import { useToast } from "@chakra-ui/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
